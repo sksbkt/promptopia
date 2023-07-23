@@ -2,7 +2,6 @@ import Nav from '@components/Nav';
 import Provider from '@components/Provider';
 import '@styles/globals.css';
 import React from 'react';
-import { get } from './api/auth/[...nextauth]/route';
 
 export const metadata = {
     title: "Promptopia",

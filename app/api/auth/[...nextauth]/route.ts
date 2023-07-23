@@ -4,16 +4,17 @@ import GoogleProvider from 'next-auth/providers/google';
 import { connectToDb } from '@utils/database'
 import User from '@models/user';
 
-console.log({
-    clientId: process.env.GOOGLE_CLIENT_ID!,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-});
-
 const handler = NextAuth({
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!, authorization: {
+                params: {
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
+                }
+            }
         })
     ],
     callbacks: {
@@ -46,7 +47,7 @@ const handler = NextAuth({
                 return false;
             }
         }
-    }
+    },
 });
 
 export { handler as GET, handler as POST };

@@ -1,15 +1,29 @@
 'use client'
 
+import { useSession } from "next-auth/react";
 import Image from "next/image"
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export const PromptCard = ({
     post,
     handleTagClick,
+    handleEdit,
+    handleDelete
 }: {
     post: any,
-    handleTagClick: any
+    handleTagClick?: (tag) => void,
+    handleEdit?: () => void,
+    handleDelete?: () => void,
 }) => {
+
+    const { data: session } = useSession();
+    const id = session?.user.id
+        // ! PRODUCTION
+        ?? '64b4f1aaed3a13de39605b66';
+
+    const pathName = usePathname();
+
     const [copied, setCopied] = useState('');
 
     const handleCopy = () => {
@@ -19,6 +33,7 @@ export const PromptCard = ({
             setCopied('');
         }, 3000);
     }
+    console.log('ID', { id, PostID: post.creator._id })
     return <div
         className="prompt_card"
     >
@@ -79,5 +94,26 @@ export const PromptCard = ({
             className="font-inter text-sm blue_gradient cursor-pointer"
             onClick={() => handleTagClick ?? handleTagClick(post.tag)}
         >#{post.tag}</p>
+        {
+            id === post.creator._id &&
+            pathName === '/profile' &&
+            (
+                <div
+                    className="mt-5 flex-start gap-4 border-t border-x-gray-200 pt-3">
+                    <p
+                        className="font-inter text-sm green_gradient cursor-pointer"
+                        onClick={handleEdit}
+                    >
+                        Edit
+                    </p>
+                    <p
+                        className="font-inter text-sm orange_gradient cursor-pointer"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </p>
+                </div>
+            )
+        }
     </div>
 }

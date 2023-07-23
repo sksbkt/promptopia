@@ -8,7 +8,7 @@ const Form = ({
     submitting,
     handleSubmit,
 }: {
-    type: 'Create' | 'Update',
+    type: 'Create' | 'Edit',
     post: {
         prompt: string, tag: string
     },
