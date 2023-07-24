@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 
 import { connectToDb } from '@utils/database'
 import User from '@models/user';
-
+import CredentialsProvider from "next-auth/providers/credentials";
 const handler = NextAuth({
     providers: [
         GoogleProvider({
@@ -15,6 +15,22 @@ const handler = NextAuth({
                     response_type: "code"
                 }
             }
+        }),
+        CredentialsProvider({
+            name: "Credential",
+            credentials: {
+                username: { label: "UserName", type: "text", placeholder: "" },
+                password: { label: "Password", type: "password" },
+            },
+            async authorize(credentials, req) {
+                const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+                if (user) {
+                    return user;
+                } else {
+                    return null;
+                }
+
+            },
         })
     ],
     callbacks: {
@@ -26,13 +42,14 @@ const handler = NextAuth({
 
             return session;
         },
-        async signIn({ profile }) {
+        async signIn({ profile, credentials }) {
             try {
                 await connectToDb();
+                console.log(profile, credentials);
+
                 //? check if user already exists
                 const userExists = await User.findOne({ email: profile.email });
                 //? if not create the user
-                console.log(profile);
 
                 if (!userExists) {
                     await User.create({
@@ -48,6 +65,7 @@ const handler = NextAuth({
             }
         }
     },
+    pages: { signIn: "/auth/credentials-signin" }
 });
 
 export { handler as GET, handler as POST };

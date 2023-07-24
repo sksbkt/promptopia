@@ -65,17 +65,20 @@ const Nav = () => {
                             </Link>
                         </div>
                     </div>) : <>
-                        {providers &&
-                            Object.values(providers).map((provider: any) => (
-                                <button
-                                    type="button"
-                                    key={provider.name}
-                                    onClick={() => signIn(provider)}
-                                    className="black_btn"
-                                >
-                                    Sign in
-                                </button>
-                            ))
+                        {providers
+                            &&
+                            // ! there is no reason to keep this iteration function here since we wont have more than one button to navigate to the actual auth/login page
+                            //     Object.values(providers).map((provider: any) => (
+                            <button
+                                type="button"
+                                key={providers.name}
+                                onClick={() => signIn(providers)}
+                                className="black_btn"
+                            >
+                                Sign in
+                            </button>
+                            // )
+                            // )
                         }
                     </>
             }
