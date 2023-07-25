@@ -8,6 +8,8 @@ export const GET = async (
     { params }: { params: { id: string } },
     res: NextResponse) => {
 
+
+
     try {
         await connectToDb();
         const prompt = await Prompt.findById(params.id).populate('creator');

@@ -9,12 +9,13 @@ export const PromptCard = ({
     post,
     handleTagClick,
     handleEdit,
-    handleDelete
+    handleDelete,
 }: {
     post: any,
     handleTagClick?: (tag) => void,
     handleEdit?: () => void,
     handleDelete?: () => void,
+
 }) => {
 
     const { data: session } = useSession();
@@ -33,7 +34,7 @@ export const PromptCard = ({
             setCopied('');
         }, 3000);
     }
-    console.log('ID', { id, PostID: post.creator._id })
+    // console.log('ID', { id, PostID: post.creator._id })
     return <div
         className="prompt_card"
     >

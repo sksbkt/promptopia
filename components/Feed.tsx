@@ -1,8 +1,7 @@
 'use client';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { PromptCard } from "./PromptCard";
-
-
+import PromptCard_skeleton from "./skeleton/PromptCard-skeleton";
 
 const PromptCardList = ({
     data,
@@ -26,21 +25,32 @@ const PromptCardList = ({
 const Feed = () => {
     const [searchText, setSearchText] = useState('');
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
+        if (e.target.value[0] === '#') {
+            console.log('its a tag');
+        } else {
+            console.log('search query');
+        }
+
         setSearchText(e.target.value);
     }
 
     useEffect(() => {
+        setLoading(true);
         const timeout = setTimeout(async () => {
-            const response = await fetch('api/prompt');
+            const response = (await fetch(`api/prompt${searchText ? '?search=' + searchText : ''}`));
             const data = await response.json();
+            setLoading(false);
             setPosts(data);
-        }, 1000);
+        }, 500);
+        console.log(posts);
         return () => clearTimeout(timeout);
     }, [searchText])
+
 
     return <section
         className="feed"
@@ -57,10 +67,14 @@ const Feed = () => {
                 className="search_input peer"
             />
         </form>
-        <PromptCardList
-            data={posts}
-            handleTagClick={() => { }}
-        />
+        {loading ?
+            <PromptCard_skeleton />
+            :
+            <PromptCardList
+                data={posts}
+                handleTagClick={() => { }}
+            />
+        }
     </section>;
 };
 
