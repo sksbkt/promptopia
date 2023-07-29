@@ -2,6 +2,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { PromptCard } from "./PromptCard";
 import PromptCard_skeleton from "./skeleton/PromptCard-skeleton";
+import { fetchData } from "next-auth/client/_utils";
 
 const PromptCardList = ({
     data,
@@ -39,13 +40,21 @@ const Feed = () => {
         setSearchText(e.target.value);
     }
 
+    const fetchData = async (tag?: string) => {
+        let response;
+        if (tag) {
+            response = (await fetch(`api/prompt${'?tag=' + tag}`));
+        } else {
+            response = (await fetch(`api/prompt${searchText ? '?search=' + searchText : ''}`));
+        }
+        const data = await response.json();
+        setLoading(false);
+        setPosts(data);
+    }
     useEffect(() => {
         setLoading(true);
         const timeout = setTimeout(async () => {
-            const response = (await fetch(`api/prompt${searchText ? '?search=' + searchText : ''}`));
-            const data = await response.json();
-            setLoading(false);
-            setPosts(data);
+            await fetchData();
         }, 500);
         console.log(posts);
         return () => clearTimeout(timeout);
@@ -72,7 +81,7 @@ const Feed = () => {
             :
             <PromptCardList
                 data={posts}
-                handleTagClick={() => { }}
+                handleTagClick={fetchData}
             />
         }
     </section>;

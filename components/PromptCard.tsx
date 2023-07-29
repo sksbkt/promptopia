@@ -93,7 +93,7 @@ export const PromptCard = ({
         </p>
         <p
             className="font-inter text-sm blue_gradient cursor-pointer"
-            onClick={() => handleTagClick ?? handleTagClick(post.tag)}
+            onClick={() => handleTagClick(post.tag)}
         >#{post.tag}</p>
         {
             id === post.creator._id &&
