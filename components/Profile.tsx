@@ -11,8 +11,8 @@ const Profile = ({
     name: string,
     desc: string,
     data: any[],
-    handleEdit: (any) => void,
-    handleDelete: (any) => void,
+    handleEdit?: (any) => void,
+    handleDelete?: (any) => void,
 }) => {
     return <section
         className="w-full"

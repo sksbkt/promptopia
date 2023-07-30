@@ -8,7 +8,6 @@ export const GET = async (
     res: NextResponse,
     // ? we are sending additional params (id) for this api endpoint
 ) => {
-    console.log(params.id);
 
     try {
         await connectToDb();

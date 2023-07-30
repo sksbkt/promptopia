@@ -8,11 +8,13 @@ import { useState } from "react";
 export const PromptCard = ({
     post,
     handleTagClick,
+    handleImgClick,
     handleEdit,
     handleDelete,
 }: {
     post: any,
     handleTagClick?: (tag) => void,
+    handleImgClick?: (id) => void,
     handleEdit?: () => void,
     handleDelete?: () => void,
 
@@ -21,7 +23,7 @@ export const PromptCard = ({
     const { data: session } = useSession();
     const id = session?.user.id
         // ! PRODUCTION
-        ?? '64b4f1aaed3a13de39605b66';
+        ?? process.env.PRODUCTION_GOOGLE_USER_ID;
 
     const pathName = usePathname();
 
@@ -35,6 +37,7 @@ export const PromptCard = ({
         }, 3000);
     }
     // console.log('ID', { id, PostID: post.creator._id })
+
     return <div
         className="prompt_card"
     >
@@ -50,6 +53,7 @@ export const PromptCard = ({
                     width={40}
                     height={40}
                     className="rounded-full object-contain"
+                    onClick={() => handleImgClick(post.creator._id)}
                 />
                 <div
                     className="flex flex-col"

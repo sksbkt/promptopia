@@ -67,10 +67,10 @@ export default async function SignIn({ csrfToken }: InferGetServerSidePropsType<
     )
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(context),
-        },
-    }
-}
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//     return {
+//         props: {
+//             csrfToken: await getCsrfToken(context),
+//         },
+//     }
+// }

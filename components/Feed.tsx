@@ -3,6 +3,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { PromptCard } from "./PromptCard";
 import PromptCard_skeleton from "./skeleton/PromptCard-skeleton";
 import { fetchData } from "next-auth/client/_utils";
+import { useRouter } from "next/navigation";
 
 const PromptCardList = ({
     data,
@@ -11,6 +12,9 @@ const PromptCardList = ({
     data: any[],
     handleTagClick: any
 }) => {
+
+    const router = useRouter();
+
     return <div
         className="mt-16 prompt_layout"
     >
@@ -19,6 +23,7 @@ const PromptCardList = ({
                 key={post._id}
                 post={post}
                 handleTagClick={handleTagClick}
+                handleImgClick={(id) => router.push(`profile/${id}`)}
             />))}
     </div>;
 }
@@ -56,7 +61,6 @@ const Feed = () => {
         const timeout = setTimeout(async () => {
             await fetchData();
         }, 500);
-        console.log(posts);
         return () => clearTimeout(timeout);
     }, [searchText])
 
