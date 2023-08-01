@@ -1,9 +1,8 @@
 'use client'
 import LoginButton from "@components/LoginButton";
 import { getServerSideProps } from "@utils/functions";
-import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { getCsrfToken, getProviders, signIn } from "next-auth/react"
-import { useEffect, useState } from "react";
+import type { InferGetServerSidePropsType } from "next";
+import { getProviders } from "next-auth/react"
 
 
 export default async function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) {
