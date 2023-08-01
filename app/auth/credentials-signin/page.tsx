@@ -58,7 +58,10 @@ export default async function SignIn({ csrfToken }: InferGetServerSidePropsType<
                                 className="auth_btn"
                                 type="submit"
                             >Sign in</button>
-                            {/* //* Login with username and password is still WIP */}
+                            {/* //* 
+                                //* for now I decided not implement login with username and password
+                                //! due to security concerns 
+                            */}
                         </div>
                     </form>
                 )
