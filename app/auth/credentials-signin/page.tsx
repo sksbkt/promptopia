@@ -5,7 +5,8 @@ import type { InferGetServerSidePropsType } from "next";
 import { getProviders } from "next-auth/react"
 
 
-export default async function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+// export default 
+async function SignIn({ csrfToken }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
 
     const response = await getProviders();
