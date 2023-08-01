@@ -1,3 +1,4 @@
+'use client'
 import LoginButton from "@components/LoginButton";
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react"

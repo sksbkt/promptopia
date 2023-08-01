@@ -77,8 +77,7 @@ const Nav = () => {
                                 >
                                     Sign in
                                 </button>
-                            )
-                            // )
+                            ))
                         }
                     </>
             }
