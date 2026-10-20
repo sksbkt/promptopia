@@ -18,6 +18,11 @@ on:
         type: string
         default: ""
         required: false
+      webhook_url:
+        description: "Portfolio base URL for webhook callback (optional if secret is set)"
+        type: string
+        default: ""
+        required: false
   workflow_call:
     inputs:
       commit_assets:
@@ -27,6 +32,9 @@ on:
         type: boolean
         default: true
       target_url:
+        type: string
+        default: ""
+      webhook_url:
         type: string
         default: ""
 
@@ -103,3 +111,22 @@ jobs:
             git push origin HEAD:${{ github.ref_name }}
             echo "Assets committed and pushed to ${{ github.ref_name }}."
           fi
+
+      - name: 🔔 Notify Portfolio Webhook
+        if: always()
+        env:
+          WEBHOOK_URL: ${{ secrets.PORTFOLIO_WEBHOOK_URL || inputs.webhook_url }}
+          WEBHOOK_SECRET: ${{ secrets.PORTFOLIO_WEBHOOK_SECRET }}
+        run: |
+          STATUS="${{ job.status == 'success' && 'COMPLETED' || 'FAILED' }}"
+          TARGET_URL="${WEBHOOK_URL}"
+          if [ -z "$TARGET_URL" ]; then
+            echo "No webhook URL configured; skipping notification."
+            exit 0
+          fi
+          echo "Sending webhook notification to $TARGET_URL/api/webhooks/github-assets..."
+          curl -s -X POST "$TARGET_URL/api/webhooks/github-assets"             -H "Content-Type: application/json"             -H "x-webhook-secret: $WEBHOOK_SECRET"             -d '{
+              "projectSlug": "'"${{ github.event.repository.name }}"'",
+              "status": "'"$STATUS"'",
+              "commitSha": "'"${{ github.sha }}"'"
+            }' || echo "Webhook notification sent or skipped"
